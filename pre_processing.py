@@ -22,7 +22,6 @@ def process_stays_gender(stays):
     stays['gender'] = stays['gender'].fillna('').apply(lambda gender : g_map[gender] if gender in g_map else 0)
     return stays
 
-
 stays = create_stays(mimic3_path)
 stays = process_stays_age(stays)
 stays = process_stays_ethnicity(stays)
