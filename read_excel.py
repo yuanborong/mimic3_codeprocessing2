@@ -35,7 +35,7 @@ def create_stays(mimi3_path):
     icustays = read_icustays_table(mimic3_path)
     admits = read_admissions_table(mimic3_path)
     stays = (pats.merge(icustays , how='inner', left_on=['subject_id'], right_on=['subject_id'])).merge(admits , how='inner' , left_on=['subject_id'], right_on=['subject_id'])
-    stays = stays[['subject_id', 'gender',  'dob', 'dod' , 'intime' , ]]
+    stays = stays[['subject_id', 'gender', 'ethnicity' , 'dob', 'dod' , 'intime'  ]]
     return stays
 
 # 合并patients和icustays表，计算age
@@ -45,9 +45,6 @@ def process_stays_age(stays):
     return stays
 
 stays = create_stays(mimic3_path)
-stays['intime'] = pd.to_datetime(stays['intime'])
-stays['dob'] = pd.to_datetime(stays['dob'])
-stays['dod'] = pd.to_datetime(stays['dod'])
 stays = process_stays_age(stays)
 
 display(stays.head())
