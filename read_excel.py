@@ -34,8 +34,8 @@ def create_stays(mimi3_path):
     pats = read_patients_table(mimic3_path)
     icustays = read_icustays_table(mimic3_path)
     admits = read_admissions_table(mimic3_path)
-    stays = (pats.merge(icustays , how='inner', left_on=['subject_id'], right_on=['subject_id'])).merge(admits , how='inner' , left_on=['subject_id'], right_on=['subject_id'])
-    stays = stays[['subject_id', 'gender', 'ethnicity' , 'dob', 'dod' , 'intime'  ]]
+    stays = (icustays.merge(admits , how='inner', left_on=['subject_id' , 'hadm_id'], right_on=['subject_id' , 'hadm_id'])).merge(pats , how='inner' , left_on=['subject_id'], right_on=['subject_id'])
+    stays = stays[['subject_id', 'hadm_id' , 'gender', 'ethnicity' , 'dob', 'dod' , 'intime'  ]]
     return stays
 
 

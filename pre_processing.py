@@ -5,7 +5,7 @@ from global_variable import global_variable
 # 计算age
 # 如果计算小于0（因为mimic为了脱敏的操作）全部年龄设置为90
 def process_stays_age(stays):
-    stays['age'] = round(((stays['intime'].subtract(stays['dob'])).apply(lambda x: x.days)) / 365)
+    stays['age'] = (round(((stays['intime'].subtract(stays['dob'])).apply(lambda x: x.days)) / 365)).apply(lambda x : int(x))
     stays.loc[stays.age < 0, 'age'] = 90
     return stays
 
