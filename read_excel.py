@@ -6,8 +6,8 @@ import pandas as pd
 mimic3_path = "mimic_data"
 
 def create_stays(table1_name , table2_name):
+    table2 = dataframe_from_csv(os.path.join(mimic3_path, table2_name))
     table1 = dataframe_from_csv(os.path.join(mimic3_path , table1_name))
-    table2 = dataframe_from_csv(os.path.join(mimic3_path , table2_name))
     stays = table1.merge(table2 , how='inner', left_on=['subject_id'], right_on=['subject_id'])
     stays = stays[['subject_id', 'gender', 'dob', 'dod' , 'intime']]
     return stays
