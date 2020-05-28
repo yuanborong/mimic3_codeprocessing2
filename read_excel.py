@@ -38,13 +38,4 @@ def create_stays(mimi3_path):
     stays = stays[['subject_id', 'gender', 'ethnicity' , 'dob', 'dod' , 'intime'  ]]
     return stays
 
-# 合并patients和icustays表，计算age
-def process_stays_age(stays):
-    stays['age'] = round(((stays['intime'].subtract(stays['dob'])).apply(lambda x: x.days)) / 365)
-    stays.loc[stays.age < 0, 'age'] = 90
-    return stays
 
-stays = create_stays(mimic3_path)
-stays = process_stays_age(stays)
-
-display(stays.head())
