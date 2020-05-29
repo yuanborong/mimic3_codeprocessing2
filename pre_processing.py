@@ -22,9 +22,21 @@ def process_stays_gender(stays):
     stays['gender'] = stays['gender'].fillna('').apply(lambda gender : g_map[gender] if gender in g_map else 0)
     return stays
 
+# 统计入院mortality
+def add_inhospital_mortality(stays):
+    mortality = (stays.dod.notnull()) & (stays.admittime <= stays.dod) & (stays.dischtime >= stays.dod)
+    mortality = mortality | ((stays.deathtime.notnull()) & (stays.admittime <= stays.deathtime) & (stays.dischtime >= stays.deathtime))
+    stays['mortality_inhospital'] = mortality.astype(int)
+    return stays
+
+# 统计ICU重症室的mortality
+def add_inicu_mortality(stays):
+    mortality = (stays.dod.notnull()) & (stays.intime <= stays.dod) & (stays.outtime >= stays.dod)
+
 stays = create_stays(mimic3_path)
 stays = process_stays_age(stays)
 stays = process_stays_ethnicity(stays)
 stays = process_stays_gender(stays)
-stays = stays.drop(['dob' , 'dod' , 'intime'] , axis=1)
+stays = add_inhospital_mortality(stays)
+stays = stays.drop(['dob' , 'dod' , 'intime' , 'admittime' , 'dischtime' , 'deathtime'] , axis=1)
 display(stays)
