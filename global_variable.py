@@ -1,5 +1,7 @@
 class global_variable:
 
+    mimic3_path = "mimic_data"
+
     g_map = {'F': 1, 'M': 2, 'OTHER': 3, '': 0}
 
     e_map = {'ASIAN': 1,

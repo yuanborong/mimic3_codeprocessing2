@@ -36,11 +36,12 @@ def add_inicu_mortality(stays):
     stays['mortality_inicu'] = mortality.astype(int)
     return stays
 
-stays = create_stays(mimic3_path)
-stays = process_stays_age(stays)
-stays = process_stays_ethnicity(stays)
-stays = process_stays_gender(stays)
-stays = add_inhospital_mortality(stays)
-stays = add_inicu_mortality(stays)
-stays = stays.drop(['dob' , 'dod' , 'intime' , 'outtime' ,'admittime' , 'dischtime' , 'deathtime'] , axis=1)
-display(stays)
+# stays = create_stays(mimic3_path)
+# stays = process_stays_age(stays)
+# stays = process_stays_ethnicity(stays)
+# stays = process_stays_gender(stays)
+# stays = add_inhospital_mortality(stays)
+# stays = add_inicu_mortality(stays)
+# stays = stays.drop(['dob' , 'dod' , 'intime' , 'outtime' ,'admittime' , 'dischtime' , 'deathtime'] , axis=1)
+# display(stays)
+

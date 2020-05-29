@@ -1,9 +1,11 @@
+import global_variable
 from util import dataframe_from_csv
 from util import display
 import os
 import pandas as pd
+from global_variable import *
 
-mimic3_path = "mimic_data"
+mimic3_path = global_variable.mimic3_path
 
 # 读取patients表，返回pats[['subject_id' , 'gender' , 'dob' , 'dod']]
 def read_patients_table(mimic3_path):
@@ -38,4 +40,11 @@ def create_stays(mimi3_path):
     stays = stays[['subject_id', 'hadm_id' , 'gender', 'ethnicity' , 'dob', 'dod' , 'admittime' , 'dischtime' , 'deathtime' ,'intime' , 'outtime' ]]
     return stays
 
+# 读取diagnose，并用字典表d_icd_diagnoses进行扩充解释
+def create_diagnose(mimic3_path):
+    diagnose = dataframe_from_csv(os.path.join(mimic3_path , "DIAGNOSES_ICD.csv"))
+    d_diagnoses = dataframe_from_csv(os.path.join(mimic3_path , "D_ICD_DIAGNOSES.csv"))
+    diagnose = diagnose.merge(d_diagnoses , how="inner" , left_on=['icd9_code'] , right_on=['icd9_code']).sort_values(by=['subject_id' , 'seq_num'] , ascending=True)
+    diagnose = diagnose[['subject_id' , 'hadm_id' , 'icd9_code' , 'short_title' ]]
+    return diagnose
 
