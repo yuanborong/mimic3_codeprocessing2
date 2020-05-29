@@ -32,11 +32,15 @@ def add_inhospital_mortality(stays):
 # 统计ICU重症室的mortality
 def add_inicu_mortality(stays):
     mortality = (stays.dod.notnull()) & (stays.intime <= stays.dod) & (stays.outtime >= stays.dod)
+    mortality = mortality | ((stays.deathtime.notnull()) & (stays.intime <= stays.deathtime) & (stays.outtime >= stays.deathtime))
+    stays['mortality_inicu'] = mortality.astype(int)
+    return stays
 
 stays = create_stays(mimic3_path)
 stays = process_stays_age(stays)
 stays = process_stays_ethnicity(stays)
 stays = process_stays_gender(stays)
 stays = add_inhospital_mortality(stays)
-stays = stays.drop(['dob' , 'dod' , 'intime' , 'admittime' , 'dischtime' , 'deathtime'] , axis=1)
+stays = add_inicu_mortality(stays)
+stays = stays.drop(['dob' , 'dod' , 'intime' , 'outtime' ,'admittime' , 'dischtime' , 'deathtime'] , axis=1)
 display(stays)
